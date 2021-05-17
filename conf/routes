@@ -107,6 +107,14 @@ GET           /myOrders                            controllers.OrderController.g
 GET           /myOrders/:id                        controllers.OrderController.readMyOrders(id: Int)
 
 
+#OrderFormController
+GET           /forms/orders                         controllers.forms.OrderController.listOrders
+GET           /forms/order/create                   controllers.forms.OrderController.createOrder()
+POST          /forms/order/create/handle            controllers.forms.OrderController.createOrderHandle()
+GET           /forms/order/update/:id               controllers.forms.OrderController.updateOrder(id: Int)
+POST          /forms/order/update/handle            controllers.forms.OrderController.updateOrderHandle()
+GET           /forms/order/delete/:id               controllers.forms.OrderController.deleteOrder(id: Int)
+
 #RateController
 POST          /rate                                controllers.RateController.createRate
 GET           /rates                               controllers.RateController.readAllRates

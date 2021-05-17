@@ -19,9 +19,7 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, paymen
 
     /** The ID column, which is the primary key, and auto incremented */
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-
-    def payment_id = column[Int]("payment_id")
-
+    def payment_id = column[Int]("payment")
     def payment_id_fk = foreignKey("payment_id_fk", payment_id, usr)(_.id)
 
 
@@ -55,7 +53,7 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, paymen
    * This is an asynchronous operation, it will return a future of the created person, which can be used to obtain the
    * id for that person.
    */
-  def create(amount: Int, description: String, payment_id: Int): Future[Order] = db.run {
+  def create(payment_id: Int): Future[Order] = db.run {
     // We create a projection of just the name and age columns, since we're not inserting a value for the id column
     (order.map(p => (p.payment_id))
       // Now define it to return the id, because we want to know what id was geneorderd for the person
@@ -79,6 +77,9 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, paymen
     order.filter(_.id === id).result.head
   }
 
+  def getByIdOption(id: Int): Future[Option[Order]] = db.run {
+    order.filter(_.id === id).result.headOption
+  }
 
   def delete(id: Int): Future[Unit] = db.run(order.filter(_.id === id).delete).map(_ => ())
 
