@@ -1,0 +1,11 @@
+@(rates: Seq[Rate])
+
+@for(rate <- rates) {
+    <strong>@rate.username_id</strong>
+    @rate.id
+    @rate.description
+    @rate.username_id
+    <a href="@controllers.forms.routes.RateController.updateRate(rate.id)">Edit</a>
+    <a href="@controllers.forms.routes.RateController.deleteRate(rate.id)">Delete</a>
+    <br>
+}

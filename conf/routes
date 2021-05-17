@@ -114,6 +114,15 @@ GET           /rate/:id                            controllers.RateController.re
 PUT           /rate/:id                            controllers.RateController.updateRate(id:Int)
 DELETE        /rate/:id                            controllers.RateController.deleteRate(id: Int)
 
+#RateFormController
+GET           /forms/rates                         controllers.forms.RateController.listRates
+GET           /forms/rate/create                   controllers.forms.RateController.createRate()
+POST          /forms/rate/create/handle            controllers.forms.RateController.createRateHandle()
+GET           /forms/rate/update/:id               controllers.forms.RateController.updateRate(id: Int)
+POST          /forms/rate/update/handle            controllers.forms.RateController.updateRateHandle()
+GET           /forms/rate/delete/:id               controllers.forms.RateController.deleteRate(id: Int)
+
+
 #WishListController
 POST          /wishList                            controllers.WishListController.createWishList
 GET           /wishList/:id                        controllers.WishListController.readWishList(id: Int)

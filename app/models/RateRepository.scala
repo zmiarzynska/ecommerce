@@ -84,7 +84,9 @@ class RateRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, userRep
     rate.filter(_.id === id).result.head
   }
 
-
+  def getByIdOption(id: Int): Future[Option[Rate]] = db.run {
+    rate.filter(_.id === id).result.headOption
+  }
   def delete(id: Int): Future[Unit] = db.run(rate.filter(_.id === id).delete).map(_ => ())
 
   def update(id: Int, new_rate: Rate): Future[Unit] = {
