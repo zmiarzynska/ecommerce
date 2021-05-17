@@ -137,6 +137,14 @@ GET           /wishList/:id                        controllers.WishListControlle
 PUT           /wishList/:id                        controllers.WishListController.updateWishList(id:Int)
 DELETE        /wishList/:id                        controllers.WishListController.deleteWishList(id: Int)
 
+#WishListFormController
+GET           /forms/wishLists                      controllers.forms.WishListController.listWishLists
+GET           /forms/wishList/create                controllers.forms.WishListController.createWishList()
+POST          /forms/wishList/create/handle         controllers.forms.WishListController.createWishListHandle()
+GET           /forms/wishList/update/:id            controllers.forms.WishListController.updateWishList(id: Int)
+POST          /forms/wishList/update/handle         controllers.forms.WishListController.updateWishListHandle()
+GET           /forms/wishList/delete/:id            controllers.forms.WishListController.deleteWishList(id: Int)
+
 #ShippingController
 POST          /shipping                            controllers.ShippingController.createShipping
 GET           /shipping/:id                        controllers.ShippingController.readShipping(id: Int)

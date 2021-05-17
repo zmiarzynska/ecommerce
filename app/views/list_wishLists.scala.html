@@ -1,0 +1,11 @@
+@(wishLists: Seq[WishList])
+
+@for(wishList <- wishLists) {
+    <strong>@wishList.id</strong>
+    @wishList.id
+    @wishList.username_id
+    @wishList.item_id
+    <a href="@controllers.forms.routes.WishListController.updateWishList(wishList.id)">Edit</a>
+    <a href="@controllers.forms.routes.WishListController.deleteWishList(wishList.id)">Delete</a>
+    <br>
+}

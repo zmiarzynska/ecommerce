@@ -84,6 +84,9 @@ class WishListRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, use
     wishList.filter(_.id === id).result.head
   }
 
+  def getByIdOption(id: Int): Future[Option[WishList]] = db.run {
+    wishList.filter(_.id === id).result.headOption
+  }
 
   def delete(id: Int): Future[Unit] = db.run(wishList.filter(_.id === id).delete).map(_ => ())
 
