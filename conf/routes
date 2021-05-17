@@ -1,0 +1,135 @@
+
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET           /                                    controllers.HomeController.index
+# An example controller showing how to use dependency injection
+GET           /count                               controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET           /message                             controllers.AsyncController.message
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file                        controllers.Assets.versioned(path="/public", file: Asset)
+
+#ItemController
+POST          /item                                controllers.ItemController.createItem
+GET           /items                               controllers.ItemController.readAllItems
+GET           /item/:id                            controllers.ItemController.readItem(id: Int)
+PUT           /item/:id                            controllers.ItemController.updateItem(id:Int)
+DELETE        /item/:id                            controllers.ItemController.deleteItem(id: Int)
+
+#ItemFormController
+GET           /forms/items                         controllers.forms.ItemController.listItems
+GET           /forms/item/create                   controllers.forms.ItemController.createItem()
+POST          /forms/item/create/handle            controllers.forms.ItemController.createItemHandle()
+GET           /forms/item/update/:id               controllers.forms.ItemController.updateItem(id: Int)
+POST          /forms/item/update/handle            controllers.forms.ItemController.updateItemHandle()
+GET           /forms/item/delete/:id               controllers.forms.ItemController.deleteItem(id: Int)
+
+#UserController
+POST          /user                                controllers.UserController.createUser
+GET           /users                               controllers.UserController.readAllUsers
+GET           /user/:id                            controllers.UserController.readUser(id: Int)
+PUT           /user/:id                            controllers.UserController.updateUser(id: Int)
+DELETE        /user/:id                            controllers.UserController.deleteUser(id: Int)
+
+#UserFormController
+GET           /forms/users                         controllers.forms.UserController.listUsers
+GET           /forms/user/create                   controllers.forms.UserController.createUser()
+POST          /forms/user/create/handle            controllers.forms.UserController.createUserHandle()
+GET           /forms/user/update/:id               controllers.forms.UserController.updateUser(id: Int)
+POST          /forms/user/update/handle            controllers.forms.UserController.updateUserHandle()
+GET           /forms/user/delete/:id               controllers.forms.UserController.deleteUser(id: Int)
+
+#CartController
+POST          /cart                                controllers.CartController.createCart
+GET           /carts                               controllers.CartController.readAllCarts
+GET           /cart/:id                            controllers.CartController.readCart(id: Int)
+PUT           /cart/:id                            controllers.CartController.updateCart(id: Int)
+DELETE        /cart/:id                            controllers.CartController.deleteCart(id: Int)
+
+#CartFormController
+GET           /forms/carts                         controllers.forms.CartController.listCarts
+GET           /forms/cart/create                   controllers.forms.CartController.createCart()
+POST          /forms/cart/create/handle            controllers.forms.CartController.createCartHandle()
+GET           /forms/cart/update/:id               controllers.forms.CartController.updateCart(id: Int)
+POST          /forms/cart/update/handle            controllers.forms.CartController.updateCartHandle()
+GET           /forms/cart/delete/:id               controllers.forms.CartController.deleteCart(id: Int)
+
+#CategoryController
+POST          /category                            controllers.CategoryController.createCategory
+GET           /categories                          controllers.CategoryController.readAllCategories
+GET           /category/:id                        controllers.CategoryController.readCategory(id: Int)
+PUT           /category/:id                        controllers.CategoryController.updateCategory(id: Int)
+DELETE        /category/:id                        controllers.CategoryController.deleteCategory(id: Int)
+
+#CategoryFormController
+GET           /forms/category                      controllers.forms.CategoryController.createCategory
+GET           /forms/categories                    controllers.forms.CategoryController.readAllCategories
+GET           /forms/category/delete/:id           controllers.forms.CategoryController.deleteCategory(id: Int)
+POST          /forms/category/create/handle        controllers.forms.CategoryController.createCategoryHandle()
+GET           /forms/category/update/:id           controllers.forms.CategoryController.updateCategory(id: Int)
+POST          /forms/category/update/handle        controllers.forms.CategoryController.updateCategoryHandle()
+
+#PaymentController
+POST          /payment                             controllers.PaymentController.createPayment
+GET           /payment/:id                         controllers.PaymentController.readPayment(id: Int)
+PUT           /payment/:id                         controllers.PaymentController.updatePayment(id: Int)
+DELETE        /payment/:id                         controllers.PaymentController.deletePayment(id: Int)
+
+#PaymentFormController
+GET           /forms/payments                      controllers.forms.PaymentController.listPayments
+GET           /forms/payment/create                controllers.forms.PaymentController.createPayment()
+POST          /forms/payment/create/handle         controllers.forms.PaymentController.createPaymentHandle()
+GET           /forms/payment/update/:id            controllers.forms.PaymentController.updatePayment(id: Int)
+POST          /forms/payment/update/handle         controllers.forms.PaymentController.updatePaymentHandle()
+GET           /forms/payment/delete/:id            controllers.forms.PaymentController.deletePayment(id: Int)
+
+#AccountController
+POST          /account                             controllers.AccountController.createAccount
+GET           /account/:id                         controllers.AccountController.readAccount(id: Int)
+PUT           /account/:id                         controllers.AccountController.updateAccount(id: Int)
+DELETE        /account/:id                         controllers.AccountController.deleteAccount(id: Int)
+
+#AccountFormController
+GET           /forms/accounts                      controllers.forms.AccountController.listAccounts
+GET           /forms/account/create                controllers.forms.AccountController.createAccount()
+POST          /forms/account/create/handle         controllers.forms.AccountController.createAccountHandle()
+GET           /forms/account/update/:id            controllers.forms.AccountController.updateAccount(id: Int)
+POST          /forms/account/update/handle         controllers.forms.AccountController.updateAccountHandle()
+GET           /forms/account/delete/:id            controllers.forms.AccountController.deleteAccount(id: Int)
+
+#OrderController
+POST          /myOrders                            controllers.OrderController.createMyOrders()
+GET           /myOrders                            controllers.OrderController.getMyOrders
+GET           /myOrders/:id                        controllers.OrderController.readMyOrders(id: Int)
+
+
+#RateController
+POST          /rate                                controllers.RateController.createRate
+GET           /rates                               controllers.RateController.readAllRates
+GET           /rate/:id                            controllers.RateController.readRate(id: Int)
+PUT           /rate/:id                            controllers.RateController.updateRate(id:Int)
+DELETE        /rate/:id                            controllers.RateController.deleteRate(id: Int)
+
+#WishListController
+POST          /wishList                            controllers.WishListController.createWishList
+GET           /wishList/:id                        controllers.WishListController.readWishList(id: Int)
+PUT           /wishList/:id                        controllers.WishListController.updateWishList(id:Int)
+DELETE        /wishList/:id                        controllers.WishListController.deleteWishList(id: Int)
+
+#ShippingController
+POST          /shipping                            controllers.ShippingController.createShipping
+GET           /shipping/:id                        controllers.ShippingController.readShipping(id: Int)
+PUT           /shipping/:id                        controllers.ShippingController.updateShipping(id: Int)
+DELETE        /shipping/:id                        controllers.ShippingController.deleteShipping(id: Int)
+
+#ShippingFormController
+GET           /forms/shippings                      controllers.forms.ShippingController.listShippings
+GET           /forms/shipping/create                controllers.forms.ShippingController.createShipping()
+POST          /forms/shipping/create/handle         controllers.forms.ShippingController.createShippingHandle()
+GET           /forms/shipping/update/:id            controllers.forms.ShippingController.updateShipping(id: Int)
+POST          /forms/shipping/update/handle         controllers.forms.ShippingController.updateShippingHandle()
+GET           /forms/shipping/delete/:id            controllers.forms.ShippingController.deleteShipping(id: Int)

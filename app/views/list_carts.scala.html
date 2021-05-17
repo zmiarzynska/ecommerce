@@ -1,0 +1,9 @@
+@(carts: Seq[Cart])
+
+@for(cart <- carts) {
+    @cart.id
+    @cart.number
+    <a href="@controllers.forms.routes.CartController.updateCart(cart.id)">Edit</a>
+    <a href="@controllers.forms.routes.CartController.deleteCart(cart.id)">Delete</a>
+    <br>
+}

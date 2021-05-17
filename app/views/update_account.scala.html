@@ -1,0 +1,20 @@
+@import controllers.forms.UpdateAccountForm
+@(account: Form[UpdateAccountForm])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.forms.routes.AccountController.updateAccountHandle) {
+    @helper.CSRF.formField
+    <input name="id" id="id" value="@account("id").value" type="hidden" />
+    @inputText(account("first_name"))
+    @inputText(account("last_name"))
+    @inputText(account("city"))
+
+
+
+    <div class="buttons">
+        <input type="submit" value="Update Account"/>
+    </div>
+}

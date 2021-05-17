@@ -1,0 +1,18 @@
+
+@import controllers.forms.CreateAccountForm
+@(account: Form[CreateAccountForm])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.forms.routes.AccountController.createAccountHandle()) {
+    @helper.CSRF.formField
+    @inputText(account("first_name"))
+    @inputText(account("last_name"))
+    @inputText(account("city"))
+
+    <div class="buttons">
+        <input type="submit" value="Add Account"/>
+    </div>
+}

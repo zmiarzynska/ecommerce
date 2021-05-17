@@ -1,0 +1,13 @@
+@(shippings: Seq[Shipping])
+
+@for(shipping <- shippings) {
+    @shipping.id
+    @shipping.street
+    @shipping.city
+    @shipping.house
+    @shipping.phone
+
+    <a href="@controllers.forms.routes.ShippingController.updateShipping(shipping.id)">Edit</a>
+    <a href="@controllers.forms.routes.ShippingController.deleteShipping(shipping.id)">Delete</a>
+    <br>
+}

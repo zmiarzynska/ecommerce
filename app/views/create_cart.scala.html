@@ -1,0 +1,16 @@
+
+@import controllers.forms.CreateCartForm
+@(cart: Form[CreateCartForm])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.forms.routes.CartController.createCartHandle()) {
+    @helper.CSRF.formField
+    @inputText(cart("number"))
+
+    <div class="buttons">
+        <input type="submit" value="Add Cart"/>
+    </div>
+}

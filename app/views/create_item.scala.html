@@ -1,0 +1,24 @@
+@import controllers.forms.CreateItemForm
+@(item: Form[CreateItemForm], categories: Seq[Category])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@import helper._
+
+@flash.get("success").getOrElse("")
+
+@form(controllers.forms.routes.ItemController.createItemHandle()) {
+    @helper.CSRF.formField
+    @inputText(item("name"))
+    @inputText(item("description"))
+
+
+    <label for="category"></label>
+    <select name="category" id="category">
+    @for(entry <- categories) {
+        <option value="@entry.id">@entry.name</option>
+    }
+    </select>
+
+    <div class="buttons">
+        <input type="submit" value="Add Item"/>
+    </div>
+}
