@@ -81,11 +81,11 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, paymen
     order.filter(_.id === id).result.headOption
   }
 
-  def delete(id: Int): Future[Unit] = db.run(order.filter(_.id === id).delete).map(_ => ())
+  def delete(id: Int): Future[Int] = db.run(order.filter(_.id === id).delete)
 
-  def update(id: Int, new_order: Order): Future[Unit] = {
+  def update(id: Int, new_order: Order): Future[Int] = {
     val orderToUpdate: Order = new_order.copy(id)
-    db.run(order.filter(_.id === id).update(orderToUpdate)).map(_ => ())
+    db.run(order.filter(_.id === id).update(orderToUpdate))
   }
 
 }
