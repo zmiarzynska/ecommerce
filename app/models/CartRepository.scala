@@ -42,7 +42,6 @@ class CartRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
     db.run(cart.filter(_.id === id).update(updatedCart))
   }
 
-  def delete(id: Int): Future[Unit] = db.run(cart.filter(_.id === id).delete).map(_ => ())
-
+  def delete(id: Int): Future[Int] = db.run(cart.filter(_.id === id).delete)
 
 }

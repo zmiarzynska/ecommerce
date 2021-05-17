@@ -93,11 +93,11 @@ class ItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider, catego
     item.filter(_.category inSet category_ids).result
   }
 
-  def delete(id: Int): Future[Unit] = db.run(item.filter(_.id === id).delete).map(_ => ())
+  def delete(id: Int): Future[Int] = db.run(item.filter(_.id === id).delete)
 
-  def update(id: Int, new_item: Item): Future[Unit] = {
+  def update(id: Int, new_item: Item): Future[Int] = {
     val itemToUpdate: Item = new_item.copy(id)
-    db.run(item.filter(_.id === id).update(itemToUpdate)).map(_ => ())
+    db.run(item.filter(_.id === id).update(itemToUpdate))
   }
 
 }
