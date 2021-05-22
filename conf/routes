@@ -88,6 +88,7 @@ POST          /forms/payment/update/handle         controllers.forms.PaymentCont
 GET           /forms/payment/delete/:id            controllers.forms.PaymentController.deletePayment(id: Int)
 
 #AccountController
+GET           /accounts                            controllers.AccountController.readAllAccounts
 POST          /account                             controllers.AccountController.createAccount
 GET           /account/:id                         controllers.AccountController.readAccount(id: Int)
 PUT           /account/:id                         controllers.AccountController.updateAccount(id: Int)
@@ -108,12 +109,12 @@ GET           /myOrders/:id                        controllers.OrderController.r
 
 
 #OrderFormController
-GET           /forms/orders                         controllers.forms.OrderController.listOrders
-GET           /forms/order/create                   controllers.forms.OrderController.createOrder()
-POST          /forms/order/create/handle            controllers.forms.OrderController.createOrderHandle()
-GET           /forms/order/update/:id               controllers.forms.OrderController.updateOrder(id: Int)
-POST          /forms/order/update/handle            controllers.forms.OrderController.updateOrderHandle()
-GET           /forms/order/delete/:id               controllers.forms.OrderController.deleteOrder(id: Int)
+GET           /forms/orders                        controllers.forms.OrderController.listOrders
+GET           /forms/order/create                  controllers.forms.OrderController.createOrder()
+POST          /forms/order/create/handle           controllers.forms.OrderController.createOrderHandle()
+GET           /forms/order/update/:id              controllers.forms.OrderController.updateOrder(id: Int)
+POST          /forms/order/update/handle           controllers.forms.OrderController.updateOrderHandle()
+GET           /forms/order/delete/:id              controllers.forms.OrderController.deleteOrder(id: Int)
 
 #RateController
 POST          /rate                                controllers.RateController.createRate
@@ -138,12 +139,12 @@ PUT           /wishList/:id                        controllers.WishListControlle
 DELETE        /wishList/:id                        controllers.WishListController.deleteWishList(id: Int)
 
 #WishListFormController
-GET           /forms/wishLists                      controllers.forms.WishListController.listWishLists
-GET           /forms/wishList/create                controllers.forms.WishListController.createWishList()
-POST          /forms/wishList/create/handle         controllers.forms.WishListController.createWishListHandle()
-GET           /forms/wishList/update/:id            controllers.forms.WishListController.updateWishList(id: Int)
-POST          /forms/wishList/update/handle         controllers.forms.WishListController.updateWishListHandle()
-GET           /forms/wishList/delete/:id            controllers.forms.WishListController.deleteWishList(id: Int)
+GET           /forms/wishLists                     controllers.forms.WishListController.listWishLists
+GET           /forms/wishList/create               controllers.forms.WishListController.createWishList()
+POST          /forms/wishList/create/handle        controllers.forms.WishListController.createWishListHandle()
+GET           /forms/wishList/update/:id           controllers.forms.WishListController.updateWishList(id: Int)
+POST          /forms/wishList/update/handle        controllers.forms.WishListController.updateWishListHandle()
+GET           /forms/wishList/delete/:id           controllers.forms.WishListController.deleteWishList(id: Int)
 
 #ShippingController
 POST          /shipping                            controllers.ShippingController.createShipping
@@ -152,9 +153,9 @@ PUT           /shipping/:id                        controllers.ShippingControlle
 DELETE        /shipping/:id                        controllers.ShippingController.deleteShipping(id: Int)
 
 #ShippingFormController
-GET           /forms/shippings                      controllers.forms.ShippingController.listShippings
-GET           /forms/shipping/create                controllers.forms.ShippingController.createShipping()
-POST          /forms/shipping/create/handle         controllers.forms.ShippingController.createShippingHandle()
-GET           /forms/shipping/update/:id            controllers.forms.ShippingController.updateShipping(id: Int)
-POST          /forms/shipping/update/handle         controllers.forms.ShippingController.updateShippingHandle()
-GET           /forms/shipping/delete/:id            controllers.forms.ShippingController.deleteShipping(id: Int)
+GET           /forms/shippings                     controllers.forms.ShippingController.listShippings
+GET           /forms/shipping/create               controllers.forms.ShippingController.createShipping()
+POST          /forms/shipping/create/handle        controllers.forms.ShippingController.createShippingHandle()
+GET           /forms/shipping/update/:id           controllers.forms.ShippingController.updateShipping(id: Int)
+POST          /forms/shipping/update/handle        controllers.forms.ShippingController.updateShippingHandle()
+GET           /forms/shipping/delete/:id           controllers.forms.ShippingController.deleteShipping(id: Int)

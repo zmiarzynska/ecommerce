@@ -10,10 +10,17 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AccountController @Inject()(cc: ControllerComponents,
-                              accountRepository: AccountRepository
-                               ) (implicit ec: ExecutionContext) extends AbstractController(cc) {
+                                  accountRepository: AccountRepository
+                                 )(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
 
+  def readAllAccounts() = Action.async {
+
+    val accounts = accountRepository.list()
+    accounts.map { accounts =>
+      Ok(Json.toJson(accounts))
+    }
+  }
 
   def createAccount(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[Account].map {
@@ -32,7 +39,7 @@ class AccountController @Inject()(cc: ControllerComponents,
     }
   }
 
-  def updateAccount(id: Int):  Action[JsValue] = Action.async(parse.json) { request =>
+  def updateAccount(id: Int): Action[JsValue] = Action.async(parse.json) { request =>
     request.body.validate[Account].map {
       account =>
         accountRepository.update(account.id, account).map { res =>
