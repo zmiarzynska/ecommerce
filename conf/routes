@@ -74,6 +74,7 @@ GET           /forms/category/update/:id           controllers.forms.CategoryCon
 POST          /forms/category/update/handle        controllers.forms.CategoryController.updateCategoryHandle()
 
 #PaymentController
+GET           /payments                            controllers.PaymentController.readAllPayments
 POST          /payment                             controllers.PaymentController.createPayment
 GET           /payment/:id                         controllers.PaymentController.readPayment(id: Int)
 PUT           /payment/:id                         controllers.PaymentController.updatePayment(id: Int)

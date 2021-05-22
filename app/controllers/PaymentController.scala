@@ -14,6 +14,14 @@ class PaymentController @Inject()(cc: ControllerComponents,
                                  ) (implicit ec: ExecutionContext) extends AbstractController(cc) {
 
 
+  def readAllPayments() = Action.async {
+
+    val payments = paymentRepository.list()
+    payments.map { payments =>
+      Ok(Json.toJson(payments))
+    }
+  }
+  
   def createPayment(): Action[JsValue] = Action.async(parse.json) {
     implicit request =>
       request.body.validate[Payment].map {
