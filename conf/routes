@@ -134,6 +134,7 @@ GET           /forms/rate/delete/:id               controllers.forms.RateControl
 
 
 #WishListController
+GET           /wishLists                           controllers.WishListController.readAllWishLists
 POST          /wishList                            controllers.WishListController.createWishList
 GET           /wishList/:id                        controllers.WishListController.readWishList(id: Int)
 PUT           /wishList/:id                        controllers.WishListController.updateWishList(id:Int)

@@ -13,7 +13,12 @@ class WishListController @Inject()(cc: ControllerComponents,
                                 ) (implicit ec: ExecutionContext)
   extends AbstractController(cc) {
 
-
+  def readAllWishLists(): Action[AnyContent] = Action.async {
+    val wishLists = wishlistRepository.list()
+    wishLists.map {
+      wishLists => Ok(Json.toJson(wishLists))
+    }
+  }
 
   def createWishList: Action[JsValue] = Action.async(parse.json)  {
     implicit request =>
