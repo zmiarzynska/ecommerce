@@ -4,7 +4,7 @@ version := "1.0"
 
 lazy val ebiznes = (project in file(".")).enablePlugins(PlayScala)
 
-
+resolvers += Resolver.jcenterRepo
 resolvers += "Akka Snapshot Repository" at "https://repo.akka.io/snapshots/"
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 resolvers += "Atlassian's Maven Public Repository" at "https://packages.atlassian.com/maven-public/"
@@ -24,7 +24,6 @@ libraryDependencies ++= Seq(   ehcache , ws , specs2 % Test , guice,
   "com.mohiva" %% "play-silhouette-totp" % "7.0.0",
   "net.codingwell" %% "scala-guice" % "5.0.1")
 
-libraryDependencies += ehcache
 
 //unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 

@@ -19,6 +19,7 @@ CREATE TABLE "item"
     "name"        VARCHAR NOT NULL,
     "description" TEXT    NOT NULL,
     "category"    INTEGER NOT NULL,
+    "price"       INTEGER NOT NULL,
     FOREIGN KEY (category) references category (id)
 );
 
@@ -73,9 +74,45 @@ CREATE TABLE "wishlist"
 
 CREATE TABLE "order"
 (
-    "id"          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "payment"     INTEGER NOT NULL,
+    "id"      INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "payment" INTEGER NOT NULL,
     FOREIGN KEY (payment) references payment (id)
+);
+
+CREATE TABLE "userAuth"
+(
+    "id"          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "providerId"  VARCHAR NOT NULL,
+    "providerKey" VARCHAR NOT NULL,
+    "email"       VARCHAR NOT NULL,
+    "password"    VARCHAR NOT NULL
+);
+
+CREATE TABLE "authToken"
+(
+    "id"     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "userId" INT     NOT NULL,
+    FOREIGN KEY (userId) references userAuth (id)
+);
+
+CREATE TABLE "passwordInfo"
+(
+    "id"          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "providerId"  VARCHAR NOT NULL,
+    "providerKey" VARCHAR NOT NULL,
+    "hasher"      VARCHAR NOT NULL,
+    "password"    VARCHAR NOT NULL,
+    "salt"        VARCHAR
+);
+
+CREATE TABLE "oAuth2Info"
+(
+    "id"          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "providerId"  VARCHAR NOT NULL,
+    "providerKey" VARCHAR NOT NULL,
+    "accessToken" VARCHAR NOT NULL,
+    "tokenType"   VARCHAR,
+    "expiresIn"   INTEGER
 );
 
 # --- !Downs
@@ -90,3 +127,4 @@ DROP TABLE "rate";
 DROP TABLE "user";
 DROP TABLE "wishlist";
 DROP TABLE "order";
+DROP TABLE "userAuth";

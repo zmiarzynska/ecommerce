@@ -161,3 +161,10 @@ POST          /forms/shipping/create/handle        controllers.forms.ShippingCon
 GET           /forms/shipping/update/:id           controllers.forms.ShippingController.updateShipping(id: Int)
 POST          /forms/shipping/update/handle        controllers.forms.ShippingController.updateShippingHandle()
 GET           /forms/shipping/delete/:id           controllers.forms.ShippingController.deleteShipping(id: Int)
+
+
+# Authentication
+POST          /signUp                              controllers.SignUpController.signUp
+POST          /signIn                              controllers.SignInController.signIn
+POST          /signOut                             controllers.SignInController.signOut
+GET           /authenticate/:provider              controllers.SocialAuthController.authenticate(provider: String)

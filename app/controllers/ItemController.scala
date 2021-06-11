@@ -12,21 +12,18 @@ import play.api.libs.json._
 import scala.concurrent.{ExecutionContext, Future}
 
 
-
 @Singleton
-class ItemController @Inject() (cc: ControllerComponents,
-                                val itemRepository: ItemRepository,
-                                  val categoryRepository: CategoryRepository,
-                               ) (implicit ec: ExecutionContext) extends AbstractController(cc) {
-
-
+class ItemController @Inject()(cc: ControllerComponents,
+                               val itemRepository: ItemRepository,
+                               val categoryRepository: CategoryRepository,
+                              )(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
 
   def createItem(): Action[JsValue] = Action.async(parse.json) {
     implicit request =>
       request.body.validate[Item].map {
         item =>
-          itemRepository.create(item.name, item.description, item.category).map { res =>
+          itemRepository.create(item.name, item.description, item.price, item.category).map { res =>
             Ok(Json.toJson(res))
           }
       }.getOrElse(Future.successful(BadRequest("")))
@@ -42,7 +39,7 @@ class ItemController @Inject() (cc: ControllerComponents,
 
   def readAllItems(): Action[AnyContent] = Action.async {
     val items = itemRepository.list()
-    items.map{
+    items.map {
       items => Ok(Json.toJson(items))
     }
   }
