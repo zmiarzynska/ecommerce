@@ -8,6 +8,7 @@
 @form(controllers.forms.routes.ItemController.createItemHandle()) {
     @helper.CSRF.formField
     @inputText(item("name"))
+    @inputText(item("price"))
     @inputText(item("description"))
 
 

@@ -30,13 +30,13 @@ class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryR
   def createItemHandle(): Action[AnyContent] = Action.async { implicit request =>
     itemForm.bindFromRequest.fold(
       errorForm => {
-        println("bad request")
+        println("bad request - create item handle in ItemController.scala")
         Future.successful(
           BadRequest(views.html.create_item(errorForm, categoryList))
         )
       },
       item => {
-        itemRepo.create(item.name, item.description, item.category).map { _ =>
+        itemRepo.create(item.name, item.description, item.price, item.category).map { _ =>
           Redirect("/forms/items")
         }
       }
@@ -46,7 +46,7 @@ class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryR
   def updateItem(id: Int): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     val item = itemRepo.getByIdOption(id)
     item.map(item => {
-      val prodForm = updateItemForm.fill(UpdateItemForm(item.get.id, item.get.category, item.get.name, item.get.description))
+      val prodForm = updateItemForm.fill(UpdateItemForm(item.get.id, item.get.category, item.get.name, item.get.price, item.get.description))
       Ok(views.html.update_item(prodForm, categoryList))
     })
   }
@@ -59,7 +59,7 @@ class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryR
         )
       },
       item => {
-        itemRepo.update(item.id, Item(item.id, item.name, item.description, item.category)).map { _ =>
+        itemRepo.update(item.id, Item(item.id, item.name, item.price, item.description, item.category)).map { _ =>
           Redirect("/forms/items")
         }
       }
@@ -77,6 +77,7 @@ class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryR
     mapping(
       "category" -> number,
       "name" -> nonEmptyText,
+      "price"-> number,
       "description" -> nonEmptyText,
     )(CreateItemForm.apply)(CreateItemForm.unapply)
   }
@@ -86,6 +87,7 @@ class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryR
       "id" -> number,
       "category" -> number,
       "name" -> nonEmptyText,
+      "price"-> number,
       "description" -> nonEmptyText,
     )(UpdateItemForm.apply)(UpdateItemForm.unapply)
   }
@@ -100,5 +102,5 @@ class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryR
   }
 }
 
-case class CreateItemForm(category: Int, name: String, description: String)
-case class UpdateItemForm(id: Int, category: Int, name: String, description: String)
+case class CreateItemForm(category: Int, name: String, price: Int, description: String)
+case class UpdateItemForm(id: Int, category: Int, name: String, price: Int, description: String)

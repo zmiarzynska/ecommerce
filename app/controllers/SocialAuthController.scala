@@ -29,12 +29,13 @@ class SocialAuthController @Inject()(scc: DefaultSilhouetteControllerComponents,
             result <- authenticatorService.embed(value, Redirect("http://localhost:3000"))
           } yield {
             val Token(name, value) = CSRF.getToken.get
-            result.withCookies(Cookie(name, value, httpOnly = false))
+            result.withCookies(Cookie(name, value, httpOnly = false), Cookie("user", profile.email.get, httpOnly = false))
           }
         }
       case _ => Future.failed(new ProviderException(s"Cannot authenticate with unexpected social provider $provider"))
     }).recover {
-      case _: ProviderException =>
+      case e: ProviderException =>
+        logger.error("2-step verification ",e)
         Forbidden("Forbidden")
     }
   })
