@@ -84,8 +84,8 @@ class AccountRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(imp
 
   def delete(id: Int): Future[Int] = db.run(account.filter(_.id === id).delete)
 
-  def update(id: Int, new_account: Account): Future[Int] = {
-    val accountToUpdate: Account = new_account.copy(id)
+  def update(id: Int, newAccount: Account): Future[Int] = {
+    val accountToUpdate: Account = newAccount.copy(id)
     db.run(account.filter(_.id === id).update(accountToUpdate))
   }
 
