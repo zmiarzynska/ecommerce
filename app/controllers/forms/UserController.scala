@@ -12,7 +12,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class UserController @Inject()(userRepo: UserRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
-
+val userUrl = "/forms/users"
   def listUsers: Action[AnyContent] = Action.async { implicit request =>
     userRepo.list().map(users => Ok(views.html.list_users(users)))
   }
@@ -31,7 +31,7 @@ class UserController @Inject()(userRepo: UserRepository, cc: MessagesControllerC
       },
       user => {
         userRepo.create(user.username, user.password).map { _ =>
-          Redirect("/forms/users")
+          Redirect(userUrl)
         }
       }
     )
@@ -54,7 +54,7 @@ class UserController @Inject()(userRepo: UserRepository, cc: MessagesControllerC
       },
       user => {
         userRepo.update(user.id, User(user.id, user.username, user.password)).map { _ =>
-          Redirect("/forms/users")
+          Redirect(userUrl)
         }
       }
     )
@@ -62,7 +62,7 @@ class UserController @Inject()(userRepo: UserRepository, cc: MessagesControllerC
 
   def deleteUser(id: Int): Action[AnyContent] = Action {
     userRepo.delete(id)
-    Redirect("/forms/users")
+    Redirect(userUrl)
   }
 
 

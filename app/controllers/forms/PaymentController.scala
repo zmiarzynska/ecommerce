@@ -12,7 +12,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class PaymentController @Inject()(paymentRepo: PaymentRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
-
+val paymentUrl = "/forms/payments"
   def listPayments: Action[AnyContent] = Action.async { implicit request =>
     paymentRepo.list().map(payments => Ok(views.html.list_payments(payments)))
   }
@@ -30,8 +30,8 @@ class PaymentController @Inject()(paymentRepo: PaymentRepository, cc: MessagesCo
         )
       },
       payment => {
-        paymentRepo.create(payment.amount, payment.payment_type).map { _ =>
-          Redirect("/forms/payments")
+        paymentRepo.create(payment.amount, payment.paymentType).map { _ =>
+          Redirect(paymentUrl)
         }
       }
     )
@@ -40,7 +40,7 @@ class PaymentController @Inject()(paymentRepo: PaymentRepository, cc: MessagesCo
   def updatePayment(id: Int): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     val payment = paymentRepo.getById(id)
     payment.map(payment => {
-      val prodForm = updatePaymentForm.fill(UpdatePaymentForm(payment.get.id, payment.get.amount, payment.get.payment_type))
+      val prodForm = updatePaymentForm.fill(UpdatePaymentForm(payment.get.id, payment.get.amount, payment.get.paymentType))
       Ok(views.html.update_payment(prodForm))
     })
   }
@@ -53,8 +53,8 @@ class PaymentController @Inject()(paymentRepo: PaymentRepository, cc: MessagesCo
         )
       },
       payment => {
-        paymentRepo.update(payment.id, Payment(payment.id, payment.amount, payment.payment_type)).map { _ =>
-          Redirect("/forms/payments")
+        paymentRepo.update(payment.id, Payment(payment.id, payment.amount, payment.paymentType)).map { _ =>
+          Redirect(paymentUrl)
         }
       }
     )
@@ -62,14 +62,14 @@ class PaymentController @Inject()(paymentRepo: PaymentRepository, cc: MessagesCo
 
   def deletePayment(id: Int): Action[AnyContent] = Action {
     paymentRepo.delete(id)
-    Redirect("/forms/payments")
+    Redirect(paymentUrl)
   }
 
 
   val paymentForm: Form[CreatePaymentForm] = Form {
     mapping(
       "amount" -> number,
-      "payment_type" -> number
+      "paymentType" -> number
     )(CreatePaymentForm.apply)(CreatePaymentForm.unapply)
   }
 
@@ -77,10 +77,10 @@ class PaymentController @Inject()(paymentRepo: PaymentRepository, cc: MessagesCo
     mapping(
       "id" -> number,
       "amount" -> number,
-      "payment_type" -> number
+      "paymentType" -> number
     )(UpdatePaymentForm.apply)(UpdatePaymentForm.unapply)
   }
 }
 
-case class CreatePaymentForm(amount: Int,payment_type: Int)
-case class UpdatePaymentForm(id: Int, amount: Int, payment_type: Int)
+case class CreatePaymentForm(amount: Int,paymentType: Int)
+case class UpdatePaymentForm(id: Int, amount: Int, paymentType: Int)

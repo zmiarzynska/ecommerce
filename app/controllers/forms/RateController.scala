@@ -13,7 +13,7 @@ import scala.util.{Failure, Success}
 @Singleton
 class RateController @Inject()(rateRepo: RateRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
-
+val rateUrl = "/forms/rates"
   def listRates(): Action[AnyContent] = Action.async { implicit request =>
     rateRepo.list().map(rates => Ok(views.html.list_rates(rates)))
   }
@@ -33,8 +33,8 @@ class RateController @Inject()(rateRepo: RateRepository, cc: MessagesControllerC
         )
       },
       rate => {
-        rateRepo.create(rate.amount, rate.description,rate.username_id).map { _ =>
-          Redirect("/forms/rates")
+        rateRepo.create(rate.amount, rate.description,rate.usernameId).map { _ =>
+          Redirect(rateUrl)
         }
       }
     )
@@ -43,7 +43,7 @@ class RateController @Inject()(rateRepo: RateRepository, cc: MessagesControllerC
   def updateRate(id: Int): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     val rate = rateRepo.getByIdOption(id)
     rate.map(rate => {
-      val prodForm = updateRateForm.fill(UpdateRateForm(rate.get.id, rate.get.amount, rate.get.description,rate.get.username_id))
+      val prodForm = updateRateForm.fill(UpdateRateForm(rate.get.id, rate.get.amount, rate.get.description,rate.get.usernameId))
       Ok(views.html.update_rate(prodForm))
     })
   }
@@ -56,8 +56,8 @@ class RateController @Inject()(rateRepo: RateRepository, cc: MessagesControllerC
         )
       },
       rate => {
-        rateRepo.update(rate.id, Rate(rate.id, rate.amount, rate.description,rate.username_id)).map { _ =>
-          Redirect("/forms/rates")
+        rateRepo.update(rate.id, Rate(rate.id, rate.amount, rate.description,rate.usernameId)).map { _ =>
+          Redirect(rateUrl)
         }
       }
     )
@@ -65,7 +65,7 @@ class RateController @Inject()(rateRepo: RateRepository, cc: MessagesControllerC
 
   def deleteRate(id: Int): Action[AnyContent] = Action {
     rateRepo.delete(id)
-    Redirect("/forms/rates")
+    Redirect(rateUrl)
   }
 
   // utilities
@@ -74,7 +74,7 @@ class RateController @Inject()(rateRepo: RateRepository, cc: MessagesControllerC
     mapping(
       "amount" -> number,
       "description" -> nonEmptyText,
-      "username_id" -> number,
+      "usernameId" -> number,
     )(CreateRateForm.apply)(CreateRateForm.unapply)
   }
 
@@ -83,12 +83,12 @@ class RateController @Inject()(rateRepo: RateRepository, cc: MessagesControllerC
       "id" -> number,
       "amount" -> number,
       "description" -> nonEmptyText,
-      "username_id" -> number,
+      "usernameId" -> number,
     )(UpdateRateForm.apply)(UpdateRateForm.unapply)
   }
 
 
 }
 
-case class CreateRateForm(amount: Int, description: String, username_id: Int)
-case class UpdateRateForm(id: Int, amount: Int, description: String, username_id: Int)
+case class CreateRateForm(amount: Int, description: String, usernameId: Int)
+case class UpdateRateForm(id: Int, amount: Int, description: String, usernameId: Int)

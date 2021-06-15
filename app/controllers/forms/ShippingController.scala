@@ -12,7 +12,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ShippingController @Inject()(shippingRepo: ShippingRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
-
+val shippingUrl = "/forms/shippings"
   def listShippings: Action[AnyContent] = Action.async { implicit request =>
     shippingRepo.list().map(shippings => Ok(views.html.list_shippings(shippings)))
   }
@@ -31,7 +31,7 @@ class ShippingController @Inject()(shippingRepo: ShippingRepository, cc: Message
       },
       shipping => {
         shippingRepo.create(shipping.street,shipping.city,shipping.house,shipping.phone).map { _ =>
-          Redirect("/forms/shippings")
+          Redirect(shippingUrl)
         }
       }
     )
@@ -54,7 +54,7 @@ class ShippingController @Inject()(shippingRepo: ShippingRepository, cc: Message
       },
       shipping => {
         shippingRepo.update(shipping.id, Shipping(shipping.id, shipping.street,shipping.city,shipping.house, shipping.phone)).map { _ =>
-          Redirect("/forms/shippings")
+          Redirect(shippingUrl)
         }
       }
     )
@@ -62,7 +62,7 @@ class ShippingController @Inject()(shippingRepo: ShippingRepository, cc: Message
 
   def deleteShipping(id: Int): Action[AnyContent] = Action {
     shippingRepo.delete(id)
-    Redirect("/forms/shippings")
+    Redirect(shippingUrl)
   }
 
 

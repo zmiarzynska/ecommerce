@@ -11,7 +11,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CategoryController @Inject()(categoryRepo: CategoryRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
-
+val categoryUrl = "/forms/categories"
   def readAllCategories: Action[AnyContent] = Action.async { implicit request =>
     categoryRepo.list().map(categories => Ok(views.html.list_category(categories)))
   }
@@ -30,7 +30,7 @@ class CategoryController @Inject()(categoryRepo: CategoryRepository, cc: Message
       },
       category => {
         categoryRepo.create(category.name).map { _ =>
-          Redirect("/forms/categories")
+          Redirect(categoryUrl)
         }
       }
     )
@@ -54,7 +54,7 @@ class CategoryController @Inject()(categoryRepo: CategoryRepository, cc: Message
       },
       category => {
         categoryRepo.update(category.id, Category(category.id, category.name)).map { _ =>
-          Redirect("/forms/categories")
+          Redirect(categoryUrl)
         }
       }
     )
@@ -62,7 +62,7 @@ class CategoryController @Inject()(categoryRepo: CategoryRepository, cc: Message
 
   def deleteCategory(id: Int): Action[AnyContent] = Action {
     categoryRepo.delete(id)
-    Redirect("/forms/categories")
+    Redirect(categoryUrl)
   }
 
 

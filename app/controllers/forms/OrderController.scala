@@ -13,7 +13,7 @@ import scala.util.{Failure, Success}
 @Singleton
 class OrderController @Inject()(orderRepo: OrderRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
-
+  val orderUrl = "/forms/orders"
   def listOrders(): Action[AnyContent] = Action.async { implicit request =>
     orderRepo.list().map(orders => Ok(views.html.list_orders(orders)))
   }
@@ -33,8 +33,8 @@ class OrderController @Inject()(orderRepo: OrderRepository, cc: MessagesControll
         )
       },
       order => {
-        orderRepo.create(order.payment_id).map { _ =>
-          Redirect("/forms/orders")
+        orderRepo.create(order.paymentId).map { _ =>
+          Redirect(orderUrl)
         }
       }
     )
@@ -43,7 +43,7 @@ class OrderController @Inject()(orderRepo: OrderRepository, cc: MessagesControll
   def updateOrder(id: Int): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     val order = orderRepo.getByIdOption(id)
     order.map(order => {
-      val prodForm = updateOrderForm.fill(UpdateOrderForm(order.get.id, order.get.payment_id))
+      val prodForm = updateOrderForm.fill(UpdateOrderForm(order.get.id, order.get.paymentId))
       Ok(views.html.update_order(prodForm))
     })
   }
@@ -56,8 +56,8 @@ class OrderController @Inject()(orderRepo: OrderRepository, cc: MessagesControll
         )
       },
       order => {
-        orderRepo.update(order.id, Order(order.id, order.payment_id)).map { _ =>
-          Redirect("/forms/orders")
+        orderRepo.update(order.id, Order(order.id, order.paymentId)).map { _ =>
+          Redirect(orderUrl)
         }
       }
     )
@@ -65,26 +65,26 @@ class OrderController @Inject()(orderRepo: OrderRepository, cc: MessagesControll
 
   def deleteOrder(id: Int): Action[AnyContent] = Action {
     orderRepo.delete(id)
-    Redirect("/forms/orders")
+    Redirect(orderUrl)
   }
 
   // utilities
 
   val orderForm: Form[CreateOrderForm] = Form {
     mapping(
-      "payment_id" -> number
+      "paymentId" -> number
     )(CreateOrderForm.apply)(CreateOrderForm.unapply)
   }
 
   val updateOrderForm: Form[UpdateOrderForm] = Form {
     mapping(
       "id" -> number,
-      "payment_id" -> number
+      "paymentId" -> number
     )(UpdateOrderForm.apply)(UpdateOrderForm.unapply)
   }
 
 
 }
 
-case class CreateOrderForm(payment_id: Int)
-case class UpdateOrderForm(id: Int, payment_id: Int)
+case class CreateOrderForm(paymentId: Int)
+case class UpdateOrderForm(id: Int, paymentId: Int)

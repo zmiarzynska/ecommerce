@@ -30,7 +30,7 @@ val accountUrl = "/forms/accounts"
         )
       },
       account => {
-        accountRepo.create(account.first_name,account.last_name,account.city).map { _ =>
+        accountRepo.create(account.firstName,account.lastName,account.city).map { _ =>
           Redirect(accountUrl)
         }
       }
@@ -40,7 +40,7 @@ val accountUrl = "/forms/accounts"
   def updateAccount(id: Int): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     val account = accountRepo.getByIdOption(id)
     account.map(acc => {
-      val prodForm = updateAccountForm.fill(UpdateAccountForm(acc.get.id, acc.get.first_name, acc.get.last_name,acc.get.city))
+      val prodForm = updateAccountForm.fill(UpdateAccountForm(acc.get.id, acc.get.firstName, acc.get.lastName,acc.get.city))
       Ok(views.html.update_account(prodForm))
     })
   }
@@ -53,7 +53,7 @@ val accountUrl = "/forms/accounts"
         )
       },
       account => {
-        accountRepo.update(account.id, Account(account.id, account.first_name,account.last_name,account.city)).map { _ =>
+        accountRepo.update(account.id, Account(account.id, account.firstName,account.lastName,account.city)).map { _ =>
           Redirect(accountUrl)
         }
       }
@@ -68,8 +68,8 @@ val accountUrl = "/forms/accounts"
 
   val accountForm: Form[CreateAccountForm] = Form {
     mapping(
-      "first_name" -> nonEmptyText,
-      "last_name" -> nonEmptyText,
+      "firstName" -> nonEmptyText,
+      "lastName" -> nonEmptyText,
       "city" -> nonEmptyText
     )(CreateAccountForm.apply)(CreateAccountForm.unapply)
   }
@@ -77,12 +77,12 @@ val accountUrl = "/forms/accounts"
   val updateAccountForm: Form[UpdateAccountForm] = Form {
     mapping(
       "id" -> number,
-      "first_name" -> nonEmptyText,
-      "last_name" -> nonEmptyText,
+      "firstName" -> nonEmptyText,
+      "lastName" -> nonEmptyText,
       "city" -> nonEmptyText
     )(UpdateAccountForm.apply)(UpdateAccountForm.unapply)
   }
 }
 
-case class CreateAccountForm(first_name: String, last_name: String, city: String)
-case class UpdateAccountForm(id: Int, first_name: String, last_name: String, city: String)
+case class CreateAccountForm(firstName: String, lastName: String, city: String)
+case class UpdateAccountForm(id: Int, firstName: String, lastName: String, city: String)

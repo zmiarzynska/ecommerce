@@ -12,7 +12,7 @@ import scala.util.{Failure, Success}
 
 @Singleton
 class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
-
+val itemUrl = "/forms/items"
   var categoryList: Seq[Category] = Seq[Category]()
 
   // fill above lists
@@ -37,7 +37,7 @@ class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryR
       },
       item => {
         itemRepo.create(item.name, item.description, item.price, item.category).map { _ =>
-          Redirect("/forms/items")
+          Redirect(itemUrl)
         }
       }
     )
@@ -60,7 +60,7 @@ class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryR
       },
       item => {
         itemRepo.update(item.id, Item(item.id, item.name, item.price, item.description, item.category)).map { _ =>
-          Redirect("/forms/items")
+          Redirect(itemUrl)
         }
       }
     )
@@ -68,7 +68,7 @@ class ItemController @Inject()(itemRepo: ItemRepository, categoryRepo: CategoryR
 
   def deleteItem(id: Int): Action[AnyContent] = Action {
     itemRepo.delete(id)
-    Redirect("/forms/items")
+    Redirect(itemUrl)
   }
 
   // utilities
