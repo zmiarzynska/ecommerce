@@ -12,7 +12,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AccountController @Inject()(accountRepo: AccountRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
-
+val accountUrl = "/forms/accounts"
   def listAccounts: Action[AnyContent] = Action.async { implicit request =>
     accountRepo.list().map(accounts => Ok(views.html.list_accounts(accounts)))
   }
@@ -54,7 +54,7 @@ class AccountController @Inject()(accountRepo: AccountRepository, cc: MessagesCo
       },
       account => {
         accountRepo.update(account.id, Account(account.id, account.first_name,account.last_name,account.city)).map { _ =>
-          Redirect("/forms/accounts")
+          Redirect(accountUrl)
         }
       }
     )
@@ -62,7 +62,7 @@ class AccountController @Inject()(accountRepo: AccountRepository, cc: MessagesCo
 
   def deleteAccount(id: Int): Action[AnyContent] = Action {
     accountRepo.delete(id)
-    Redirect("/forms/accounts")
+    Redirect(accountUrl)
   }
 
 
