@@ -58,17 +58,17 @@ CREATE TABLE "rate"
     "id"          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "amount"      INTEGER NOT NULL,
     "description" TEXT    NOT NULL,
-    "username_id" INTEGER NOT NULL,
-    FOREIGN KEY (username_id) references user (id)
+    "usernameId" INTEGER NOT NULL,
+    FOREIGN KEY (usernameId) references user (id)
 );
 
 CREATE TABLE "wishlist"
 (
     "id"          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "username_id" INTEGER NOT NULL,
-    "item_id"     INTEGER NOT NULL,
-    FOREIGN KEY (username_id) references user (id),
-    FOREIGN KEY (item_id) references item (id)
+    "usernameId" INTEGER NOT NULL,
+    "itemId"     INTEGER NOT NULL,
+    FOREIGN KEY (usernameId) references user (id),
+    FOREIGN KEY (itemId) references item (id)
 
 );
 
