@@ -17,7 +17,6 @@ class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
 
     /** The ID column, which is the primary key, and auto incremented */
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-    /*case class User(id: Int, username: String, password: String) */
 
     /** The name column */
     def username = column[String]("username")
@@ -81,8 +80,8 @@ class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
 
   def delete(id: Int): Future[Int] = db.run(user.filter(_.id === id).delete)
 
-  def update(id: Int, new_user: User): Future[Int] = {
-    val userToUpdate: User = new_user.copy(id)
+  def update(id: Int, newUser: User): Future[Int] = {
+    val userToUpdate: User = newUser.copy(id)
     db.run(user.filter(_.id === id).update(userToUpdate))
   }
 

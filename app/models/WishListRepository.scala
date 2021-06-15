@@ -19,14 +19,12 @@ class WishListRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, use
     /** The ID column, which is the primary key, and auto incremented */
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
-    def username_id = column[Int]("username_id")
+    def usernameId = column[Int]("usernameId")
 
-    def username_id_fk = foreignKey("username_id_fk", username_id, usr)(_.id)
+    def usernameIdFk = foreignKey("usernameIdFk", usernameId, usr)(_.id)
 
-    def item_id = column[Int]("item_id")
-
-  /*  def item_id_fk = foreignKey("item_id_fk", item_id, item)(_.id) */
-
+    def itemId = column[Int]("itemId")
+    
 
     /**
      * This is the tables default "projection".
@@ -36,7 +34,7 @@ class WishListRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, use
      * In this case, we are simply passing the id, name and page parameters to the Person case classes
      * apply and unapply methods.
      */
-    def * = (id, username_id, item_id) <> ((WishList.apply _).tupled, WishList.unapply)
+    def * = (id, usernameId, itemId) <> ((WishList.apply _).tupled, WishList.unapply)
 
   }
 
@@ -60,16 +58,16 @@ class WishListRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, use
    * This is an asynchronous operation, it will return a future of the created person, which can be used to obtain the
    * id for that person.
    */
-  def create(username_id: Int, item_id: Int): Future[WishList] = db.run {
+  def create(usernameId: Int, itemId: Int): Future[WishList] = db.run {
     // We create a projection of just the name and age columns, since we're not inserting a value for the id column
-    (wishList.map(p => (p.username_id, p.item_id))
+    (wishList.map(p => (p.usernameId, p.itemId))
       // Now define it to return the id, because we want to know what id was for the person
       returning wishList.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into { case ((username_id, item_id), id) => WishList(id, username_id, item_id) }
+      into { case ((usernameId, itemId), id) => WishList(id, usernameId, itemId) }
       // And finally, insert the wishList into the database
-      ) += (username_id,item_id)
+      ) += (usernameId,itemId)
   }
 
   /**
@@ -90,8 +88,8 @@ class WishListRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, use
 
   def delete(id: Int): Future[Int] = db.run(wishList.filter(_.id === id).delete)
 
-  def update(id: Int, new_wishList: WishList): Future[Int] = {
-    val wishListToUpdate: WishList = new_wishList.copy(id)
+  def update(id: Int, newWishList: WishList): Future[Int] = {
+    val wishListToUpdate: WishList = newWishList.copy(id)
     db.run(wishList.filter(_.id === id).update(wishListToUpdate))  }
 
 }
