@@ -45,8 +45,8 @@ class ShippingRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
 
   def delete(id: Int): Future[Int] = db.run(shipping.filter(_.id === id).delete)
 
-  def update(id: Int, new_shipping: Shipping): Future[Int] = {
-    val shippingToUpdate: Shipping = new_shipping.copy(id)
+  def update(id: Int, newShipping: Shipping): Future[Int] = {
+    val shippingToUpdate: Shipping = newShipping.copy(id)
     db.run(shipping.filter(_.id === id).update(shippingToUpdate))
   }
 }

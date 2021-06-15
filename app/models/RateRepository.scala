@@ -15,7 +15,6 @@ class RateRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, userRep
 
 
   private class RateTable(tag: Tag) extends Table[Rate](tag, "rate") {
-   /* Rate(id: Int, amount: Int, description: String, username_id: Int) */
 
     /** The ID column, which is the primary key, and auto incremented */
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
@@ -26,9 +25,9 @@ class RateRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, userRep
     /** The age column */
     def description = column[String]("description")
 
-    def username_id = column[Int]("username_id")
+    def usernameId = column[Int]("usernameId")
 
-    def username_id_fk = foreignKey("username_id_fk",username_id, usr)(_.id)
+    def usernameIdFk = foreignKey("usernameIdFk",usernameId, usr)(_.id)
 
 
     /**
@@ -39,7 +38,7 @@ class RateRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, userRep
      * In this case, we are simply passing the id, name and page parameters to the Person case classes
      * apply and unapply methods.
      */
-    def * = (id, amount, description, username_id) <> ((Rate.apply _).tupled, Rate.unapply)
+    def * = (id, amount, description, usernameId) <> ((Rate.apply _).tupled, Rate.unapply)
 
   }
 
@@ -60,16 +59,16 @@ class RateRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, userRep
    * This is an asynchronous operation, it will return a future of the created person, which can be used to obtain the
    * id for that person.
    */
-  def create(amount: Int, description: String, username_id: Int): Future[Rate] = db.run {
+  def create(amount: Int, description: String, usernameId: Int): Future[Rate] = db.run {
     // We create a projection of just the name and age columns, since we're not inserting a value for the id column
-    (rate.map(p => (p.amount, p.description,p.username_id))
+    (rate.map(p => (p.amount, p.description,p.usernameId))
       // Now define it to return the id, because we want to know what id was generated for the person
       returning rate.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into {case ((amount,description,username_id),id) => Rate(id,amount, description,username_id)}
+      into {case ((amount,description,usernameId),id) => Rate(id,amount, description,usernameId)}
       // And finally, insert the rate into the database
-      ) += (amount, description,username_id)
+      ) += (amount, description,usernameId)
   }
 
   /**
@@ -89,8 +88,8 @@ class RateRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, userRep
   }
   def delete(id: Int): Future[Int] = db.run(rate.filter(_.id === id).delete)
 
-  def update(id: Int, new_rate: Rate): Future[Int] = {
-    val rateToUpdate: Rate = new_rate.copy(id)
+  def update(id: Int, newRate: Rate): Future[Int] = {
+    val rateToUpdate: Rate = newRate.copy(id)
     db.run(rate.filter(_.id === id).update(rateToUpdate))
   }
 

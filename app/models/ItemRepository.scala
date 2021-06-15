@@ -28,7 +28,7 @@ class ItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider, catego
 
     def category = column[Int]("category")
 
-    def category_fk = foreignKey("cat_fk",category, cat)(_.id)
+    def categoryFk = foreignKey("cat_fk",category, cat)(_.id)
 
 
     /**
@@ -79,8 +79,8 @@ class ItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider, catego
     item.result
   }
 
-  def getByCategory(category_id: Int): Future[Seq[Item]] = db.run {
-    item.filter(_.category === category_id).result
+  def getByCategory(categoryId: Int): Future[Seq[Item]] = db.run {
+    item.filter(_.category === categoryId).result
   }
 
   def getById(id: Int): Future[Item] = db.run {
@@ -91,14 +91,14 @@ class ItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider, catego
     item.filter(_.id === id).result.headOption
   }
 
-  def getByCategories(category_ids: List[Int]): Future[Seq[Item]] = db.run {
-    item.filter(_.category inSet category_ids).result
+  def getByCategories(categoryIds: List[Int]): Future[Seq[Item]] = db.run {
+    item.filter(_.category inSet categoryIds).result
   }
 
   def delete(id: Int): Future[Int] = db.run(item.filter(_.id === id).delete)
 
-  def update(id: Int, new_item: Item): Future[Int] = {
-    val itemToUpdate: Item = new_item.copy(id)
+  def update(id: Int, newItem: Item): Future[Int] = {
+    val itemToUpdate: Item = newItem.copy(id)
     db.run(item.filter(_.id === id).update(itemToUpdate))
   }
 

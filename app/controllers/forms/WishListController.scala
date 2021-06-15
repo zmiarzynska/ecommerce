@@ -13,7 +13,7 @@ import scala.util.{Failure, Success}
 @Singleton
 class WishListController @Inject()(wishListRepo: WishListRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
-
+ val wishUrl = "/forms/wishLists"
   def listWishLists(): Action[AnyContent] = Action.async { implicit request =>
     wishListRepo.list().map(wishLists => Ok(views.html.list_wishLists(wishLists)))
   }
@@ -33,8 +33,8 @@ class WishListController @Inject()(wishListRepo: WishListRepository, cc: Message
         )
       },
       wishList => {
-        wishListRepo.create(wishList.username_id,wishList.item_id).map { _ =>
-          Redirect("/forms/wishLists")
+        wishListRepo.create(wishList.usernameId,wishList.itemId).map { _ =>
+          Redirect(wishUrl)
         }
       }
     )
@@ -43,7 +43,7 @@ class WishListController @Inject()(wishListRepo: WishListRepository, cc: Message
   def updateWishList(id: Int): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     val wishList = wishListRepo.getByIdOption(id)
     wishList.map(wishList => {
-      val prodForm = updateWishListForm.fill(UpdateWishListForm(wishList.get.id, wishList.get.username_id,wishList.get.item_id))
+      val prodForm = updateWishListForm.fill(UpdateWishListForm(wishList.get.id, wishList.get.usernameId,wishList.get.itemId))
       Ok(views.html.update_wishList(prodForm))
     })
   }
@@ -56,8 +56,8 @@ class WishListController @Inject()(wishListRepo: WishListRepository, cc: Message
         )
       },
       wishList => {
-        wishListRepo.update(wishList.id, WishList(wishList.id,wishList.username_id,wishList.item_id)).map { _ =>
-          Redirect("/forms/wishLists")
+        wishListRepo.update(wishList.id, WishList(wishList.id,wishList.usernameId,wishList.itemId)).map { _ =>
+          Redirect(wishUrl)
         }
       }
     )
@@ -65,28 +65,28 @@ class WishListController @Inject()(wishListRepo: WishListRepository, cc: Message
 
   def deleteWishList(id: Int): Action[AnyContent] = Action {
     wishListRepo.delete(id)
-    Redirect("/forms/wishLists")
+    Redirect(wishUrl)
   }
 
   // utilities
 
   val wishListForm: Form[CreateWishListForm] = Form {
     mapping(
-      "username_id" -> number,
-      "item_id" -> number
+      "usernameId" -> number,
+      "itemId" -> number
     )(CreateWishListForm.apply)(CreateWishListForm.unapply)
   }
 
   val updateWishListForm: Form[UpdateWishListForm] = Form {
     mapping(
       "id" -> number,
-      "username_id" -> number,
-      "item_id" -> number
+      "usernameId" -> number,
+      "itemId" -> number
     )(UpdateWishListForm.apply)(UpdateWishListForm.unapply)
   }
 
 
 }
 
-case class CreateWishListForm(username_id: Int, item_id: Int)
-case class UpdateWishListForm(id: Int, username_id: Int, item_id: Int)
+case class CreateWishListForm(usernameId: Int, itemId: Int)
+case class UpdateWishListForm(id: Int, usernameId: Int, itemId: Int)

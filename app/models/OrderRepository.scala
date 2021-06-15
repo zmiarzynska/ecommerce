@@ -15,12 +15,11 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, paymen
 
 
   private class OrderTable(tag: Tag) extends Table[Order](tag, "order") {
-    /* Order(id: Int, amount: Int, description: String, payment_id: Int) */
 
     /** The ID column, which is the primary key, and auto incremented */
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-    def payment_id = column[Int]("payment")
-    def payment_id_fk = foreignKey("payment_id_fk", payment_id, usr)(_.id)
+    def paymentId = column[Int]("payment")
+    def paymentIdFk = foreignKey("paymentIdFk", paymentId, usr)(_.id)
 
 
     /**
@@ -31,7 +30,7 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, paymen
      * In this case, we are simply passing the id, name and page parameters to the Person case classes
      * apply and unapply methods.
      */
-    def * = (id, payment_id) <> ((Order.apply _).tupled, Order.unapply)
+    def * = (id, paymentId) <> ((Order.apply _).tupled, Order.unapply)
 
   }
 
@@ -53,16 +52,16 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, paymen
    * This is an asynchronous operation, it will return a future of the created person, which can be used to obtain the
    * id for that person.
    */
-  def create(payment_id: Int): Future[Order] = db.run {
+  def create(paymentId: Int): Future[Order] = db.run {
     // We create a projection of just the name and age columns, since we're not inserting a value for the id column
-    (order.map(p => (p.payment_id))
+    (order.map(p => (p.paymentId))
       // Now define it to return the id, because we want to know what id was geneorderd for the person
       returning order.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into { case ((payment_id), id) => Order(id, payment_id) }
+      into { case ((paymentId), id) => Order(id, paymentId) }
       // And finally, insert the order into the database
-      ) += (payment_id)
+      ) += (paymentId)
   }
 
   /**
@@ -83,8 +82,8 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, paymen
 
   def delete(id: Int): Future[Int] = db.run(order.filter(_.id === id).delete)
 
-  def update(id: Int, new_order: Order): Future[Int] = {
-    val orderToUpdate: Order = new_order.copy(id)
+  def update(id: Int, newOrder: Order): Future[Int] = {
+    val orderToUpdate: Order = newOrder.copy(id)
     db.run(order.filter(_.id === id).update(orderToUpdate))
   }
 

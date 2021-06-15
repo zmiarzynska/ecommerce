@@ -19,9 +19,9 @@ class AccountRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(imp
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     /** The name column */
-    def first_name = column[String]("first_name")
+    def firstName = column[String]("firstName")
 
-    def last_name = column[String]("last_name")
+    def lastName = column[String]("lastName")
 
 
     /** The age column */
@@ -36,7 +36,7 @@ class AccountRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(imp
      * In this case, we are simply passing the id, name and page parameters to the Person case classes
      * apply and unapply methods.
      */
-    def * = (id, first_name, last_name, city ) <> ((Account.apply _).tupled, Account.unapply)
+    def * = (id, firstName, lastName, city ) <> ((Account.apply _).tupled, Account.unapply)
 
   }
 
@@ -53,16 +53,16 @@ class AccountRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(imp
    * This is an asynchronous operation, it will return a future of the created person, which can be used to obtain the
    * id for that person.
    */
-  def create(first_name: String, last_name: String, city: String): Future[Account] = db.run {
+  def create(firstName: String, lastName: String, city: String): Future[Account] = db.run {
     // We create a projection of just the name and age columns, since we're not inserting a value for the id column
-    (account.map(p => (p.first_name, p.last_name, p.city))
+    (account.map(p => (p.firstName, p.lastName, p.city))
       // Now define it to return the id, because we want to know what id was generated for the person
       returning account.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into {case ((first_name,last_name, city),id) => Account(id,first_name, last_name, city)}
+      into {case ((firstName,lastName, city),id) => Account(id,firstName, lastName, city)}
       // And finally, insert the account into the database
-      ) += (first_name,last_name,city)
+      ) += (firstName,lastName,city)
   }
 
   /**
