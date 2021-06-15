@@ -31,7 +31,7 @@ val accountUrl = "/forms/accounts"
       },
       account => {
         accountRepo.create(account.first_name,account.last_name,account.city).map { _ =>
-          Redirect("/forms/accounts")
+          Redirect(accountUrl)
         }
       }
     )
