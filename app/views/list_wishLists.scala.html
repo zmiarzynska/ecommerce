@@ -3,8 +3,8 @@
 @for(wishList <- wishLists) {
     <strong>@wishList.id</strong>
     @wishList.id
-    @wishList.username_id
-    @wishList.item_id
+    @wishList.usernameId
+    @wishList.itemId
     <a href="@controllers.forms.routes.WishListController.updateWishList(wishList.id)">Edit</a>
     <a href="@controllers.forms.routes.WishListController.deleteWishList(wishList.id)">Delete</a>
     <br>

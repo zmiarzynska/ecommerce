@@ -18,7 +18,7 @@ class RateController @Inject()(cc: ControllerComponents,
     implicit request =>
       request.body.validate[Rate].map {
         rate =>
-          rateRepository.create(rate.amount, rate.description, rate.username_id).map { res =>
+          rateRepository.create(rate.amount, rate.description, rate.usernameId).map { res =>
             Ok(Json.toJson(res))
           }
       }.getOrElse(Future.successful(BadRequest("")))

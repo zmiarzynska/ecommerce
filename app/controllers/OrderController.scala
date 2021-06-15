@@ -18,7 +18,7 @@ class OrderController @Inject()(cc: ControllerComponents,
     implicit request =>
       request.body.validate[Order].map {
         order =>
-          orderRepository.create(order.payment_id).map { res =>
+          orderRepository.create(order.paymentId).map { res =>
             Ok(Json.toJson(res))
           }
       }.getOrElse(Future.successful(BadRequest("")))

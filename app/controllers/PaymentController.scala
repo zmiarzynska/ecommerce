@@ -26,7 +26,7 @@ class PaymentController @Inject()(cc: ControllerComponents,
     implicit request =>
       request.body.validate[Payment].map {
         payment =>
-          paymentRepository.create(payment.amount, payment.payment_type).map { res =>
+          paymentRepository.create(payment.amount, payment.paymentType).map { res =>
             Ok(Json.toJson(res))
           }
       }.getOrElse(Future.successful(BadRequest("")))

@@ -3,7 +3,7 @@
 @for(order <- orders) {
     <strong>@order.id</strong>
     @order.id
-    @order.payment_id
+    @order.paymentId
 
     <a href="@controllers.forms.routes.OrderController.updateOrder(order.id)">Edit</a>
     <a href="@controllers.forms.routes.OrderController.deleteOrder(order.id)">Delete</a>

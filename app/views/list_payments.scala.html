@@ -3,7 +3,7 @@
 @for(payment <- payments) {
     @payment.id
     @payment.amount
-    @payment.payment_type
+    @payment.paymentType
 
     <a href="@controllers.forms.routes.PaymentController.updatePayment(payment.id)">Edit</a>
     <a href="@controllers.forms.routes.PaymentController.deletePayment(payment.id)">Delete</a>

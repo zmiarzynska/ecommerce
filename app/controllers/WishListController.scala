@@ -24,7 +24,7 @@ class WishListController @Inject()(cc: ControllerComponents,
     implicit request =>
       request.body.validate[WishList].map {
         wishlist =>
-          wishlistRepository.create(wishlist.username_id, wishlist.item_id).map { res =>
+          wishlistRepository.create(wishlist.usernameId, wishlist.itemId).map { res =>
             Ok(Json.toJson(res))
           }
       }.getOrElse(Future.successful(BadRequest("")))
