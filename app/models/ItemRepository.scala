@@ -28,6 +28,8 @@ class ItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider, catego
 
     def category = column[Int]("category")
 
+    def image = column[String]("image")
+
     def categoryFk = foreignKey("cat_fk",category, cat)(_.id)
 
 
@@ -39,7 +41,7 @@ class ItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider, catego
      * In this case, we are simply passing the id, name and page parameters to the Person case classes
      * apply and unapply methods.
      */
-    def * = (id, name, price, description, category) <> ((Item.apply _).tupled, Item.unapply)
+    def * = (id, name, price, description, image, category) <> ((Item.apply _).tupled, Item.unapply)
 
   }
 
@@ -60,16 +62,16 @@ class ItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider, catego
    * This is an asynchronous operation, it will return a future of the created person, which can be used to obtain the
    * id for that person.
    */
-  def create(name: String, description: String, price: Int, category: Int): Future[Item] = db.run {
+  def create(name: String, description: String, price: Int, image: String, category: Int): Future[Item] = db.run {
     // We create a projection of just the name and age columns, since we're not inserting a value for the id column
-    (item.map(p => (p.name, p.description, p.price, p.category))
+    (item.map(p => (p.name, p.description, p.price, p.image, p.category))
       // Now define it to return the id, because we want to know what id was generated for the person
       returning item.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into {case ((name,description,price,category),id) => Item(id,name,price,description,category)}
+      into {case ((name,description,price,image,category),id) => Item(id,name,price,description,image,category)}
       // And finally, insert the item into the database
-      ) += (name, description,price,category)
+      ) += (name, description,price,image,category)
   }
 
   /**

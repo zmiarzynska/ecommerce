@@ -36,7 +36,7 @@ val itemUrl = "/forms/items"
         )
       },
       item => {
-        itemRepo.create(item.name, item.description, item.price, item.category).map { _ =>
+        itemRepo.create(item.name, item.description, item.price, item.image, item.category).map { _ =>
           Redirect(itemUrl)
         }
       }
@@ -46,7 +46,7 @@ val itemUrl = "/forms/items"
   def updateItem(id: Int): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     val item = itemRepo.getByIdOption(id)
     item.map(item => {
-      val prodForm = updateItemForm.fill(UpdateItemForm(item.get.id, item.get.category, item.get.name, item.get.price, item.get.description))
+      val prodForm = updateItemForm.fill(UpdateItemForm(item.get.id, item.get.category, item.get.name, item.get.price, item.get.image, item.get.description))
       Ok(views.html.update_item(prodForm, categoryList))
     })
   }
@@ -59,7 +59,7 @@ val itemUrl = "/forms/items"
         )
       },
       item => {
-        itemRepo.update(item.id, Item(item.id, item.name, item.price, item.description, item.category)).map { _ =>
+        itemRepo.update(item.id, Item(item.id, item.name, item.price, item.description, item.image, item.category)).map { _ =>
           Redirect(itemUrl)
         }
       }
@@ -78,6 +78,7 @@ val itemUrl = "/forms/items"
       "category" -> number,
       "name" -> nonEmptyText,
       "price"-> number,
+      "image" -> nonEmptyText,
       "description" -> nonEmptyText,
     )(CreateItemForm.apply)(CreateItemForm.unapply)
   }
@@ -88,6 +89,7 @@ val itemUrl = "/forms/items"
       "category" -> number,
       "name" -> nonEmptyText,
       "price"-> number,
+      "image" -> nonEmptyText,
       "description" -> nonEmptyText,
     )(UpdateItemForm.apply)(UpdateItemForm.unapply)
   }
@@ -102,5 +104,5 @@ val itemUrl = "/forms/items"
   }
 }
 
-case class CreateItemForm(category: Int, name: String, price: Int, description: String)
-case class UpdateItemForm(id: Int, category: Int, name: String, price: Int, description: String)
+case class CreateItemForm(category: Int, name: String, price: Int, image:String, description: String)
+case class UpdateItemForm(id: Int, category: Int, name: String, price: Int, image: String, description: String)

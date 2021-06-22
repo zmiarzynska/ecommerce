@@ -23,7 +23,7 @@ class ItemController @Inject()(cc: ControllerComponents,
     implicit request =>
       request.body.validate[Item].map {
         item =>
-          itemRepository.create(item.name, item.description, item.price, item.category).map { res =>
+          itemRepository.create(item.name, item.description, item.price, item.image,item.category).map { res =>
             Ok(Json.toJson(res))
           }
       }.getOrElse(Future.successful(BadRequest("")))
