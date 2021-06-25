@@ -17,7 +17,10 @@ class SocialAuthController @Inject()(scc: DefaultSilhouetteControllerComponents,
 
   def authenticate(provider: String): Action[AnyContent] = addToken(Action.async { implicit request: Request[AnyContent] =>
     (socialProviderRegistry.get[SocialProvider](provider) match {
+
       case Some(p: SocialProvider with CommonSocialProfileBuilder) =>
+        val Token(name, value) = CSRF.getToken.get
+        val url = "https://ebiznes-frontend-zm.azurewebsites.net/" + value
         p.authenticate().flatMap {
           case Left(result) => Future.successful(result)
           case Right(authInfo) => for {
@@ -26,7 +29,7 @@ class SocialAuthController @Inject()(scc: DefaultSilhouetteControllerComponents,
             _ <- authInfoRepository.save(profile.loginInfo, authInfo)
             authenticator <- authenticatorService.create(profile.loginInfo)
             value <- authenticatorService.init(authenticator)
-            result <- authenticatorService.embed(value, Redirect("https://ebiznes-frontend-zm.azurewebsites.net"))
+            result <- authenticatorService.embed(value, Redirect(url))
           } yield {
             val Token(name, value) = CSRF.getToken.get
             result.withCookies(Cookie(name, value, httpOnly = false), Cookie("user", profile.email.get, httpOnly = false))
